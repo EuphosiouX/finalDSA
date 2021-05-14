@@ -18,6 +18,13 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
 	value.pin = pin;
 	value.balance = balance;
 	
+	// Pointing to the first element of Linked List at an index of HashTable 
+	Values *head;
+	
+	hashValue = hashFunction(value.key);
+	Values currValue = hashTable.find(hashValue)->second;
+        head = &currValue;
+	
 	map<int, Values>::iterator it;
 	
 	// Handling maximum size error of the hash table
