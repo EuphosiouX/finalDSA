@@ -11,31 +11,42 @@ HashTable::HashTable() {
 
 // Insert item to the hash table
 void HashTable::insertItem(int key, string name, string password, int pin, double balance) {
-	Values value;
-	value.key = key;
-	value.name = name;
-	value.password = password;
-	value.pin = pin;
-	value.balance = balance;
+	// Initialize new value
+	Values* value = new Values;
+	value->key = key;
+	value->name = name;
+	value->password = password;
+	value->pin = pin;
+	value->balance = balance;
 	
 	// Pointing to the first element of Linked List at an index of HashTable 
 	Values *head;
 	
-	hashValue = hashFunction(value.key);
-	Values currValue = hashTable.find(hashValue)->second;
-        head = &currValue;
+	// Getting index from key
+	hashValue = hashFunction(value->key);
 	
 	map<int, Values>::iterator it;
+   	it = hashTable.find(hashValue);
 	
-	// Handling maximum size error of the hash table
-	if (it != hashTable.end() && hashTable.size() == max_hash_size) { 
-        cout << "[ERROR] Hashtable is full" << endl;
-    } else {
-  		hashValue = hashFunction(value.key);
-    	hashTable.emplace(hashValue, value);
-    	cout << "[INFO] Item successfully inserted" << endl;
-    }
-
+	// If key is not found
+	if (it == hashTable.end()) {
+		hashTable.emplace(hashValue, *value);
+		cout << "[INFO] Item successfully inserted" << endl;
+		return;
+	} 
+	// If key is found and there is value
+	else {
+		// Insert value at the last linked-list of the index
+		Values currValue = hashTable.find(hashValue)->second;
+		head = &currValue;
+		while (head->next != nullptr){  		
+			if (head->next == nullptr) {
+				head->next = value; 
+					return;			
+				}
+			head = head->next;
+		}
+	}
 }
 
 // Delete item from hash tables by key
