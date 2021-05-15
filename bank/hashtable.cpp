@@ -42,8 +42,8 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
 		while (head->next != nullptr){  		
 			if (head->next == nullptr) {
 				head->next = value; 
-					return;			
-				}
+				return;			
+			}
 			head = head->next;
 		}
 	}
