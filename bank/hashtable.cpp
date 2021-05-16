@@ -18,6 +18,7 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
 	value->password = password;
 	value->pin = pin;
 	value->balance = balance;
+	value->next = nullptr;
 	
 	// Pointing to the first element of Linked List at an index of HashTable 
 	Values *head;
