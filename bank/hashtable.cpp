@@ -25,9 +25,7 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
 	
 	// Getting index from key
 	hashValue = hashFunction(value->key);
-	
-	map<int, Values>::iterator it;
-   	it = hashTable.find(hashValue);
+   	auto it = hashTable.find(hashValue);
 	
 	// If key is not found
 	if (it == hashTable.end()) {
