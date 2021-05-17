@@ -33,9 +33,28 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
 }
 
 
-// Delete item from hash tables by key
-void HashTable::deleteItem(int key) {
-	
+// Delete specific id
+void HashTable::deleteItem(int key){
+  // get the hash index of key
+      int hashValue = hashFunction(key);
+
+  // find the key in (inex)th list
+      list <Values> :: iterator i;
+      for (i = hashTable[hashValue].begin(); i != hashTable[hashValue].end(); i++) {
+          Values currValue = *i;
+        if (currValue.key == key)
+              break;
+      }
+
+  // if key is found in hash table, remove it
+    if (i != hashTable[hashValue].end()) {
+    	hashTable[hashValue].erase(i);
+        cout << "[INFO] ID " << key << " deleted" << endl;
+        return;
+	}        
+    else {
+        cout << "[ERROR] ID " << key << " not found" << endl;
+    }
 }
 
 
