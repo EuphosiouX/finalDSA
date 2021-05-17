@@ -12,40 +12,24 @@ HashTable::HashTable() {
 // Insert item to the hash table
 void HashTable::insertItem(int key, string name, string password, int pin, double balance) {
 	// Initialize new value
-	Values* value = new Values;
-	value->key = key;
-	value->name = name;
-	value->password = password;
-	value->pin = pin;
-	value->balance = balance;
-	value->next = nullptr;
-	
-	// Pointing to the first element of Linked List at an index of HashTable 
-	Values *head;
+	Values val;
+	val.key = key;
+	val.name = name;
+	val.password = password;
+	val.pin = pin;
+	val.balance = balance;
+	val.next = nullptr;
 	
 	// Getting index from key
 	hashValue = hashFunction(key);
-   	auto it = hashTable.find(hashValue);
 	
-	// If key is not found
-	if (it == hashTable.end()) {
-		hashTable.emplace(hashValue, *value);
-		cout << "[INFO] Item successfully inserted" << endl;
-		return;
-	} 
-	// If key is found and there is value
-	else {
-		// Insert value at the last linked-list of the index
-		Values currValue = hashTable.find(hashValue)->second;
-		head = &currValue;
-		while (head->next != nullptr){  		
-			if (head->next == nullptr) {
-				head->next = value; 
-				return;			
-			}
-			head = head->next;
+	for (auto x : hashTable[hashValue]) {
+		if (x.key == val.key) {
+			cout << "[ERROR] Duplicate ID " << val.key << endl;
+			return;
 		}
 	}
+	hashTable[hashValue].push_back(val);
 }
 
 // Delete item from hash tables by key
