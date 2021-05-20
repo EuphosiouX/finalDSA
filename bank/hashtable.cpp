@@ -20,135 +20,133 @@ HashTable::HashTable() {
 
 // Insert item to the hash table
 void HashTable::insertItem(int key, string name, string password, int pin, double balance) {
-	// Get the index of hashtable
-	int hashValue = hashFunction(key);
-	
-	// First element in the index
-	if (hashTable[hashValue]->name=="empty" && hashTable[hashValue]->password=="empty"&&hashTable[hashValue]->pin==0&&hashTable[hashValue]->balance==0.0){
-		// Check if there's duplicated ID
-		for (auto i=keyRecords.begin(); i!=keyRecords.end(); ++i) {
-			if (*i == key) {
-				 cout << "Duplicated ID" << endl;
-				 return;
-			}		 
-		}
-		// Set the value and push_back
-		hashTable[hashValue]->key = key;
-		hashTable[hashValue]->name = name;
-		hashTable[hashValue]->password = name;
-		hashTable[hashValue]->pin = pin;
-		hashTable[hashValue]->balance = balance;
-		keyRecords.push_back(key);
-	}
-	
-	// If not, create a new element at the end of the linked list
-	else 
-	{
-		// Check if there's duplicated ID
-		for (auto i=keyRecords.begin(); i!=keyRecords.end(); ++i) {
-			if (*i == key) {
-				cout << "Duplicated ID" << endl;
-				return;
-			}		 
-		}
-		// Create a pointer on the first element of the index
-		linkedList *temp = hashTable[hashValue];
-		// Create a pointer to make new linkedList
-		linkedList *head = new linkedList;
-		// Set the value and push_back
-		if (temp->key != key) {
-			head->key = key;
-			head->name = name;
-			head->password = password;
-			head->pin = pin;
-			head->balance = balance;
-			keyRecords.push_back(key); 
-			while(temp->next != nullptr) {
-				temp = temp->next;
-			}
-		temp->next = head; 
-		}
-	}
+    // Get the index of hashtable
+    int hashValue = hashFunction(key);
+    // Create a pointer on the first element of the index
+    linkedList *temp = hashTable[hashValue];
+    // Create a pointer to make new linkedList
+    linkedList *head = new linkedList;
+
+    // Set the value
+    head->key = key;
+    head->name = name;
+    head->password = password;
+    head->pin = pin;
+    head->balance = balance;
+    head->next = nullptr;
+
+    // First element in the index (default from constructor)
+    if (temp->key == 0 && temp->name=="empty" && temp->password=="empty" && temp->pin==0 && temp->balance==0.0 && temp == nullptr){
+    	for (auto i=keyRecords.begin(); i!=keyRecords.end(); ++i) {
+            if (*i == key) {
+                 cout << "Duplicated ID" << endl;
+                 return;
+            }
+   	 	}
+        temp = head;
+        hashTable[hashValue] = temp; 
+        keyRecords.push_back(key);
+        cout << "Successfuly insert user ID " << key << endl;
+    }
+
+    // If not, create a new element at the end of the linked list
+    else 
+    {
+    	for (auto i=keyRecords.begin(); i!=keyRecords.end(); ++i) {
+            if (*i == key) {
+                 cout << "Duplicated ID" << endl;
+                 return;
+            }
+   		}
+        while(temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = head; 
+        keyRecords.push_back(key);
+        cout << "Successfuly insert user ID " << key << endl;
+    }
 }
 
 // Delete item from hash tables by key
 void HashTable::deleteItem(int key) {
-	// Get the index of hashtable
-	hashValue = hashFunction(key);
-	
-	// Create a pointer at the first element of the index
-	linkedList *temp = hashTable[hashValue];
-	linkedList *prev = hashTable[hashValue];
-	
-	if (hashValue != 0) {
-		// If there is no linked list
-		if (temp->next == nullptr) {
-			if (temp->key == key) {
-				keyRecords.remove(temp->key); 
-				free(temp);
-				cout<< "ID " << key << " deleted" << endl;
-				return;
-			}
-		}
-		
-		// Else if the first value of linked list matches key 
-		else if (temp->key == key) {
-			prev = temp;
-			temp = temp->next;
-			keyRecords.remove(prev->key); 
-			free(prev);
-			hashTable[hashValue] = temp;			
-			cout<< "ID " << key << " deleted" << endl;
-			return;			
-		}
-			
-		// Else iterate through linked list
-		else {
-			while (temp->next != nullptr)
-			{
-				prev = temp;
-				temp = temp->next;
-				if (temp->key == key) {
-					prev->next = temp->next;
-					temp->next = nullptr;
-					keyRecords.remove(temp->key); 
-					cout<< "ID " << key << " deleted" << endl;
-					return;  
-				}	
-				// If it does not exist
-				cout << "ID " << key << " does not exist" << endl;
-				return;			
-			}		
-		}	
-	}
+    // Get the index of hashtable
+    hashValue = hashFunction(key);
+
+    // Create a pointer at the first element of the index
+    linkedList *temp = hashTable[hashValue];
+    linkedList *prev = nullptr;
+
+    if (hashValue != 0) {
+        // If it is the first element of the index is null
+        if (temp == nullptr) {
+            cout <<"ID " << key << " does not exist" << endl;
+            return;
+        }
+        // If the first element of linked list matches key 
+        if (temp->key == key) {
+            prev = temp;
+            temp = temp->next;
+            keyRecords.remove(key); 
+            delete prev;
+            hashTable[hashValue] = temp;
+            cout<< "ID " << key << " deleted" << endl;
+            return;
+        }
+        else {
+            while (temp != nullptr)
+            {
+                prev = temp;
+                temp = temp->next;
+                if (prev->next == nullptr){
+                    // If the first element of the index is not null (default from constructor)
+                    if (prev->key != key){
+                        cout <<"ID " << key << " does not exist" << endl;
+                        return;
+                    }
+                }
+                // Else if ID match
+                else if (temp->key == key) {
+                    prev->next = temp->next;
+                    temp->next = nullptr;
+                    keyRecords.remove(key); 
+                    cout<< "ID " << key << " deleted" << endl;
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Display the hash tables of a particular key
 void HashTable::displayHash(int key) { 
-	// Get the index of hashtable
-	hashValue = hashFunction(key);
-	
-	// Check if the index of the hashtable not equal to zero
-	if(hashValue!=0) {
-		// Create a temp pointer at the first element of the index
-		linkedList *temp = hashTable[hashValue];
-			// While haven't reach the end of the linkedList
-			while (temp->next != nullptr) {
-				// Check if input key is equal to the value key stored
-				if (temp->key == key) {
-					cout << "ID: " << temp->key << "\n";
-					cout << "Name: " << temp->name << "\n";
-					cout << "Balance: " << temp->balance << "\n";
-					return;
-				}
-				temp = temp->next;
-			}
-		// Check if temp is empty or the key doesn't match
-		if (temp == nullptr || temp->key != key){
-			cout<<"Error when displaying ID " << key << endl;
-			return;
-		}
-	} 
+    // Get the index of hashtable
+    hashValue = hashFunction(key);
+
+    // Check if the index of the hashtable not equal to zero
+    if(hashValue!=0) {
+        // Create a temp pointer at the first element of the index
+        linkedList *temp = hashTable[hashValue];
+        // Check if temp is empty or the key doesn't match
+        if (temp == nullptr){
+            cout<< "Error when displaying ID " << key << endl;
+            return;
+        }
+        // While haven't reach the end of the linkedList
+        while (temp != nullptr) {
+            // Check if input key is equal to the value key stored
+            if (temp->key == key) {
+                cout << "ID: " << temp->key << "\n";
+                cout << "Name: " << temp->name << "\n";
+                cout << "Balance: " << temp->balance << "\n";
+                return;
+            } else if (temp->key != key && temp->next == nullptr) {
+
+                cout<< "Error when displaying ID " << key << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+    } 
 }
 
 // Change Password
@@ -160,20 +158,24 @@ void HashTable::changePassword(int key, string password) {
 	if(hashValue!=0) {
 		// Create a temp pointer at the first element of the index
 		linkedList *temp = hashTable[hashValue];
+		// Check if temp is empty or the key doesn't match
+		if (temp == nullptr) {
+			cout << "No Element found at ID " << key <<endl;
+			return; 
+		}
 		// While haven't reach the end of the linkedList
-		while (temp->next != nullptr) {
+		while (temp != nullptr) {
 			// Check if input key is equal to the value key stored
 			// If equal, change password with the one inputted
 			if (temp->key == key) {
 				temp->password = password;
 				return;
-			}	
+			}
+			else if (temp->key != key && temp->next == nullptr){
+				cout << "No Element found at ID " << key <<endl;
+				return;
+			}
 			temp = temp->next;
-		}
-		// Check if temp is empty or the key doesn't match
-		if (temp == nullptr || temp->key != key) {
-			cout << "No Element found at key " << key <<endl;
-			return; 
 		}
 	} 
 }
@@ -187,8 +189,13 @@ void HashTable::withdrawal(int key, int pin, double amt) {
 	if (hashValue != 0) {
 		// Create a temp pointer at the first element of the index
 		linkedList *temp = hashTable[hashValue];
+		// Check if temp is empty
+		if (temp == nullptr) {
+			cout << "No Element found at ID " << key <<endl;
+			return;	
+		} 
 		// While haven't reach the end of the linkedList
-		while(temp->next != nullptr) {
+		while(temp != nullptr) {
 			// Check if input key and pin are equal to the value key and pin stored
 			if (temp->key == key && temp->pin == pin) {
 				// Check if inputted ammount is less than existing balance
@@ -205,17 +212,12 @@ void HashTable::withdrawal(int key, int pin, double amt) {
 					cout << "Insufficient balance" << endl;
 				}
 			} 
+			//  Check if the inpuuted key and pin don't match with stored one
+			else if (temp->key != key && temp->pin != pin && temp->next == nullptr) {
+				cout << "You're not allowed to withdraw " << key <<endl;
+				return; 
+			}
 			temp = temp->next;
-		}
-		// Check if temp is empty
-		if (temp == nullptr) {
-			return;	
-		} 
-		//  Check if the inpuuted key and pin don't match with stored one
-		if (temp->key != key && temp->pin != pin)
-		{
-			cout << "You're not allowed to withdraw" << key <<endl;
-			return; 
 		}	
 	}
 }
@@ -229,8 +231,13 @@ void HashTable::deposit(int key, int pin, double amt) {
 	if (hashValue != 0) {
 		// Create a temp pointer at the first element of the index
 		linkedList *temp = hashTable[hashValue];
+		// Check if temp is empty
+		if (temp == nullptr) {
+			cout << "No Element found at ID " << key <<endl;
+			return;	
+		} 
 		// While haven't reach the end of the linkedList
-		while(temp->next != nullptr) {
+		while(temp != nullptr) {
 			// Check if input key and pin are equal to the value key and pin stored
 			if (temp->key == key && temp->pin == pin) {
 				// Check if inputted ammount is larger than 0
@@ -247,17 +254,12 @@ void HashTable::deposit(int key, int pin, double amt) {
 					cout << "Must be bigger amount than 0" << endl;
 				}
 			}
+			//  Check if the inpuuted key and pin don't match with stored one
+			else if (temp->key != key && temp->pin != pin && temp->next == nullptr) {
+				cout << "You're not allowed to deposit " << key <<endl;
+				return; 
+			}
 			temp = temp->next;
-		}
-		// Check if temp is empty
-		if (temp == nullptr) {
-			return;	
-		} 
-		//  Check if the inpuuted key and pin don't match with stored one
-		if (temp->key != key && temp->pin != pin)
-		{
-			cout << "You're not allowed to deposit" << key <<endl;
-			return; 
 		}
 	}
 }
@@ -271,8 +273,13 @@ void HashTable::getWithdrawRecords(int key) {
 	if (hashValue != 0) {
 		// Create a temp pointer at the first element of the index
 		linkedList *temp = hashTable[hashValue];
+		// Check if temp is empty
+		if (temp == nullptr) {
+			cout << "No Element found at ID " << key <<endl;
+			return; 
+		}	
 		// While haven't reach the end of the linkedList
-		while(temp->next != nullptr) {
+		while(temp != nullptr) {
 			// Check if input key is equal to the value key stored
 			if (temp->key == key) {
 				cout << "Withdraw records: [";
@@ -281,19 +288,14 @@ void HashTable::getWithdrawRecords(int key) {
 				}
 			cout << "]" << endl;
 			return;
+			}
+			//  Check if the inpuuted key doesn't match with stored one
+			else if (temp->key != key && temp->next == nullptr) {
+				cout << "You're not allowed to get the withdraw records" << key <<endl;
+				return; 
 			}	
 			temp = temp->next;
 		}
-		// Check if temp is empty
-		if (temp == nullptr) {
-			return; 
-		}
-		//  Check if the inpuuted key doesn't match with stored one
-		if (temp->key != key)
-		{
-			cout << "You're not allowed to get the withdraw records" << key <<endl;
-			return; 
-		} 	
 	}
 }
 
@@ -306,29 +308,29 @@ void HashTable::getDepositRecords(int key) {
 	if (hashValue != 0) {
 		// Create a temp pointer at the first element of the index
 		linkedList *temp = hashTable[hashValue];
-			// While haven't reach the end of the linkedList
-			while(temp->next != nullptr) {
-				// Check if input key is equal to the value key stored
-				if (temp->key == key) {
-					cout << "Deposit records: [";
-					for(auto i = temp->depositRecords.begin(); i!= temp->depositRecords.end(); ++i) {
-						cout << "$" << *i << ","; 
-					}
-					cout << "]" << endl;
-					return;
-				}
-				temp = temp->next;
-			}
 		// Check if temp is empty
 		if (temp == nullptr) {
-			return; 
-		} 
-		//  Check if the inpuuted key doesn't match with stored one
-		if (temp->key != key)
-		{
-			cout << "You're not allowed to get the deposit records" << key <<endl;
+			cout << "No Element found at ID " << key <<endl;
 			return; 
 		} 		
+		// While haven't reach the end of the linkedList
+		while(temp != nullptr) {
+			// Check if input key is equal to the value key stored
+			if (temp->key == key) {
+				cout << "Deposit records: [";
+				for(auto i = temp->depositRecords.begin(); i!= temp->depositRecords.end(); ++i) {
+					cout << "$" << *i << ","; 
+				}
+				cout << "]" << endl;
+				return;
+			}
+			//  Check if the inpuuted key doesn't match with stored one
+			else if (temp->key != key && temp->next == nullptr) {
+				cout << "You're not allowed to get the withdraw records" << key <<endl;
+				return; 
+			}
+			temp = temp->next;
+		}
 	}
 }
 
@@ -382,5 +384,3 @@ int EncryptDecrypt::decryptPin(int pin) {
 	
 	return decryptedPin;
 }
-
-
