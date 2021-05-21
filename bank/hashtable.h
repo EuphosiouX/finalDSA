@@ -1,13 +1,15 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 #include <iostream>
-#include <set>
 #include <list>
+
 using namespace std;
 
+// HashTable class
 class HashTable{
     private:
         static const int max_hash_size = 50;
+        // Linkedlist class
         class linkedList {
         	public:
         		int key; // original ID
@@ -29,13 +31,15 @@ class HashTable{
         void deleteItem(int key);
         int hashFunction(int key);
         void displayHash(int key);
-        void changePassword(int key, string password);
+        void changePassword(int key, string oldPassword, string newPassword);
         void withdrawal(int key, int pin, double amt);
         void deposit(int key, int pin, double amt);
         void getWithdrawRecords(int key);
         void getDepositRecords(int key);
+        bool checkCustomerAuth(int key, string password);
 };
 
+// Encrypt Decrypt class
 class EncryptDecrypt {
 	public:
 		EncryptDecrypt();
