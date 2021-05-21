@@ -10,9 +10,9 @@ void intro() {
 	cout << "|____________________________________________________|" << endl;
 	cout << "|________________________Menu________________________|" << endl;
 	cout << "|    1. Admin                                        |" << endl;
-    cout << "|    2. Customer                                     |" << endl;
-    cout << "|    3. Exit                                         |" << endl;
-    cout << "|____________________________________________________|" << endl;
+        cout << "|    2. Customer                                     |" << endl;
+        cout << "|    3. Exit                                         |" << endl;
+        cout << "|____________________________________________________|" << endl;
 }
 
 // For admin introduction
@@ -22,12 +22,12 @@ void adminFunction() {
 	cout << "|____________________________________________________|" << endl;
 	cout << "|_____________________Admin Menu_____________________|" << endl;
 	cout << "|    1. Add Customer                                 |" << endl;
-    cout << "|    2. Delete Customer                              |" << endl;
-    cout << "|    3. Search Customer                              |" << endl;
-    cout << "|    4. Search Deposit Record                        |" << endl;
-    cout << "|    5. Search Withdrawal Record                     |" << endl;
-    cout << "|    6. Back                                         |" << endl;
-    cout << "|____________________________________________________|" << endl;
+        cout << "|    2. Delete Customer                              |" << endl;
+        cout << "|    3. Search Customer                              |" << endl;
+        cout << "|    4. Search Deposit Record                        |" << endl;
+        cout << "|    5. Search Withdrawal Record                     |" << endl;
+        cout << "|    6. Back                                         |" << endl;
+        cout << "|____________________________________________________|" << endl;
     
 }
 
@@ -38,13 +38,13 @@ void custFunction() {
 	cout << "|____________________________________________________|" << endl;
 	cout << "|____________________Customer Menu___________________|" << endl;
 	cout << "|    1. Deposit                                      |" << endl;
-    cout << "|    2. Withdraw                                     |" << endl;
-    cout << "|    3. Display Balance                              |" << endl;
-    cout << "|    4. Change Password                              |" << endl;
-    cout << "|    5. Search Deposit Record                        |" << endl;
-    cout << "|    6. Search Withdrawal Record                     |" << endl;
-    cout << "|    7. Back                                         |" << endl;
-    cout << "|____________________________________________________|" << endl;
+        cout << "|    2. Withdraw                                     |" << endl;
+        cout << "|    3. Display Balance                              |" << endl;
+        cout << "|    4. Change Password                              |" << endl;
+        cout << "|    5. Search Deposit Record                        |" << endl;
+        cout << "|    6. Search Withdrawal Record                     |" << endl;
+        cout << "|    7. Back                                         |" << endl;
+        cout << "|____________________________________________________|" << endl;
 
 }
 

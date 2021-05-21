@@ -43,7 +43,7 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
                 cout << "Duplicated ID" << endl;
                 return;
             }
-   	 	}
+   	}
         temp = head;
         hashTable[hashValue] = temp; 
         keyRecords.push_back(key);
@@ -59,7 +59,7 @@ void HashTable::insertItem(int key, string name, string password, int pin, doubl
                  cout << "Duplicated ID" << endl;
                  return;
             }
-   		}
+   	}
         while(temp->next != nullptr) {
             temp = temp->next;
         }
@@ -137,20 +137,20 @@ void HashTable::displayHash(int key) {
         }
         // While haven't reach the end of the linkedList
         while (temp != nullptr) {
-            // Check if input key is equal to the value key stored
-            if (temp->key == key) {
-                cout << "ID: " << temp->key << "\n";
-                cout << "Name: " << temp->name << "\n";
-                cout << "Balance: " << temp->balance << "\n";
-                return;
-            } 
+        	// Check if input key is equal to the value key stored
+		if (temp->key == key) {
+		    cout << "ID: " << temp->key << "\n";
+		    cout << "Name: " << temp->name << "\n";
+		    cout << "Balance: " << temp->balance << "\n";
+		    return;
+		} 
             // Else if input key is not equal to the value key stored
             // and check if it has reached the end of the linkedlist
-			else if (temp->key != key && temp->next == nullptr) {
-                cout<< "Error when displaying ID " << key << endl;
-                return;
-            }
-            temp = temp->next;
+		else if (temp->key != key && temp->next == nullptr) {
+		    cout<< "Error when displaying ID " << key << endl;
+		    return;
+		}
+        	temp = temp->next;
         }
     } 
 }
@@ -181,14 +181,14 @@ void HashTable::changePassword(int key, string oldPassword, string newPassword) 
                     return;
                 } 
                 // Else if password doesn't match with the value password stored, not allowed to change
-				else if (temp->password != oldPassword) {
+		else if (temp->password != oldPassword) {
                     cout << "You are not authenticated to change password" << endl;
                     return;
                 }
             }
             // Else if input key is not equal to the value key stored
             // and check if it has reached the end of the linkedlist
-            else if (temp->key != key && temp->next == nullptr){
+            else if (temp->key != key && temp->next == nullptr) {
                 cout << "No Element found at ID " << key <<endl;
                 return;
             }
@@ -272,10 +272,10 @@ void HashTable::deposit(int key, int pin, double amt) {
 					// If true, increment the balance by the amount of money inputted
 					// Push the amount of money deposit to the depositRecords
 					if (amt > 0) {
-					temp->balance += amt;
-					temp->depositRecords.push_back(amt);
-					cout << "Successfully deposit $" << amt << endl;
-					return;
+						temp->balance += amt;
+						temp->depositRecords.push_back(amt);
+						cout << "Successfully deposit $" << amt << endl;
+						return;
 					}
 					// Else, show error
 					else {
@@ -322,8 +322,8 @@ void HashTable::getWithdrawRecords(int key) {
 				for(auto i = temp->withdrawRecords.begin(); i!= temp->withdrawRecords.end(); ++i) {
 					cout << "$" << *i << ","; 
 				}
-			cout << "]" << endl;
-			return;
+				cout << "]" << endl;
+				return;
 			}
 			//  Check if the inputed key doesn't match with stored one
 			// and check if it has reached the end of the linkedlist
@@ -366,7 +366,7 @@ void HashTable::getDepositRecords(int key) {
 			else if (temp->key != key && temp->next == nullptr) {
 				cout << "You're not allowed to get the deposit records  " << key <<endl;
 				return; 
-			}
+				}
 			temp = temp->next;
 		}
 	}
