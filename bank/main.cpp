@@ -5,6 +5,7 @@ using namespace std;
 
 // Welcome introduction
 void intro() {
+        system("cls");
 	cout << " ____________________________________________________ " << endl;
 	cout << "|                   Night Owl's Bank                 |" << endl;
 	cout << "|____________________________________________________|" << endl;
